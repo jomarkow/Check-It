@@ -1,6 +1,7 @@
 import tkinter
 import tkinter.messagebox
 import customtkinter
+import easygui
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -17,7 +18,7 @@ class App(customtkinter.CTk):
         self.tabs = []
 
         # configure window
-        self.title("CustomTkinter complex_example.py")
+        self.title("Automatize.py")
         self.geometry(f"{1100}x{580}")
 
         # configure grid layout (4x4)
@@ -29,13 +30,13 @@ class App(customtkinter.CTk):
         self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
-        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="Check It", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="Automatizer", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, text= "New tab", command=self.add_tab)
         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, text= "Delete tab", command=self.add_tab)
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, text= "Delete tab", command=self.del_tab)
         self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_1)
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
@@ -59,7 +60,6 @@ class App(customtkinter.CTk):
         self.main_button_1 = customtkinter.CTkButton(master=self, text = "Add note", fg_color="black", command = self.new_note)
         self.main_button_1.grid(row=3, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-
         # create tabview
 
 
@@ -70,49 +70,33 @@ class App(customtkinter.CTk):
         actual_tab = self.tabview.get()
 
 
-        self.note = customtkinter.CTkCheckBox(master= self.tabview.tab(actual_tab), text = self.entry.get(), font = ("Arial", 20), command=self.delete_note)
+        self.note = customtkinter.CTkCheckBox(master = self.tabview.tab(actual_tab), text = self.entry.get(), font = ("Arial", 20), command=self.delete_note)
         self.note.grid(row=self.note_cant, column=0, pady=(20, 20), padx=20, sticky="s")
         self.note_cant += 1
         
-        
-    def delete_note(self):
-        
-        self.note.destroy()
+    
+
     
     def add_tab(self):
         
-        get_tab_name = customtkinter.CTkInputDialog(text="Type tab name:", title="New tab")
-        
-        tab_name = get_tab_name.get_input()
-        self.tabview.add(tab_name) 
-        
-        
-        frame = customtkinter.CTkFrame(self.tabview.tab(tab_name))
-        
-        #self.tabs[tab_name] = customtkinter.CTkFrame(self.tabview.tab(dialog.get_input()))
-        
-        #self.frames[dialog.get_input()].grid(row=0, column=0, padx=(20, 20), pady=(20, 0), sticky="nsew")
-
+        text = "Enter tab information"
+        title = "Tab creation"
+        input_list = ["Number", "Name", "Description"]
+        number, name, description = easygui.multenterbox(text, title, input_list)
     
-
-
-
-        # create checkbox and switch frame
-
-        #self.checkbox_1 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        #self.checkbox_1.grid(row=1, column=0, pady=(20, 0), padx=20, sticky="s")
-        #self.checkbox_2 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        #self.checkbox_2.grid(row=2, column=0, pady=(20, 0), padx=20, sticky="n")
-        #self.checkbox_3 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        #self.checkbox_3.grid(row=3, column=0, pady=20, padx=20, sticky="n")
-
-        # set default values
-
-    def add_note():
+        if number not in ("", None): self.tabview.add(f"{number}: {name}") 
+        
+        # ADD PANDAS
+        
+    def del_tab(self):
+        
+        self.note.destroy()
+        
+    def add_con(self):
         pass
-
-
-
+    
+    def del_con():
+        pass
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
@@ -120,9 +104,6 @@ class App(customtkinter.CTk):
     def change_scaling_event(self, new_scaling: str):
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
         customtkinter.set_widget_scaling(new_scaling_float)
-
-    def sidebar_button_event(self):
-        print("sidebar_button click")
 
 
 if __name__ == "__main__":

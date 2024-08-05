@@ -1,27 +1,44 @@
 import json
 
-class data:
+# Function to load settings from a JSON file
+def load_settings():
+    try:
+        with open('../config/settings.json', 'r') as file:
+            settings = json.load(file)
+    except FileNotFoundError:
+        # If the file doesn't exist, create default settings
+        settings = {
+            'theme': 'light',
+            'language': 'English',
+            'notifications': True
+        }
+    return settings
 
-    def __init__(self):
+# Function to save settings to a JSON file
+def save_settings(settings):
+    with open('../config/settings.json', 'w') as file:
+        json.dump(settings, file, indent=4)
 
-        pass
+# Function to change settings
+def change_settings(settings):
+    print("Current Settings:")
+    for key, value in settings.items():
+        print(f"{key}: {value}")
+    
+    # Get user input to change settings
+    theme = input("Enter new theme (e.g., dark, light): ")
+    language = input("Enter new language: ")
+    notifications = input("Enable notifications (True/False): ").lower() == 'true'
 
-    def read_data(self):
+    # Update settings
+    settings['theme'] = theme
+    settings['language'] = language
+    settings['notifications'] = notifications
 
-        with open("data/notes.json", "r") as file:
+    print("Settings updated.")
 
-            self.data = json.load(file)
-
-        self.username = self.data["username"]
-        self.note = self.note["note"]
-
-        return({"Username": self.username, "Note": self.note})
-
-    def write_data(self, username, note):
-
-        
-
-        with open("data/notes.json", "w") as file:
-
-            self.data = json.dump(data, file)
-
+# Main program
+if __name__ == "__main__":
+    settings = load_settings()
+    change_settings(settings)
+    save_settings(settings)
